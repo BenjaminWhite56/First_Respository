@@ -1,0 +1,95 @@
+---
+title: "Report_Age_and_Birthweight"
+author: "Benjamin Wyss"
+editor: visual
+date: today
+format:
+  html:
+    toc: true
+    code-fold: show
+    code-tools: true
+    df-print: paged
+    embed-resources: true
+  pdf:
+    toc: true
+  docx:
+    toc: true
+---
+
+```{r}
+#| output: false
+# Load libraries
+library(here)
+library(tidyverse)
+library(lubridate)
+library(unibeCols)
+```
+
+## Introduction
+
+This study is part of a larger investigation of low birth weight of infants. Here we analysed the relationship between the mothers' age and the birth weights of the infants. To learn more about [Body weights](https://www.japanwelt.de/blog/sumo-ringen-leitfaden-fuer-japans-nationalsport) and the future career options.
+
+## Data
+
+We read and process the data of birth cases from the "birthwt dataset" from the MASS package.
+
+```{r}
+#| output: false
+#| echo: false
+
+# Load the MASS package (if not already installed)
+if (!requireNamespace("MASS", quietly = TRUE)) {
+  install.packages("MASS")
+}
+library(MASS)
+# Read data
+data(birthwt)
+```
+
+
+## Analysis
+
+@fig-births shows the weight of infants from mothers aged 20-30. 
+
+```{r}
+#| label: fig-births
+#| fig.cap: "Scatter plot of maternal age (20-30) vs. infant birth weight" 
+
+filtered_data <- subset(birthwt, age >= 20 & age <= 30)
+
+# Create a scatter plot of maternal age vs. infant birth weight for the filtered dataset
+plot(filtered_data$age, filtered_data$bwt,
+     xlab = "Maternal Age",
+     ylab = "Infant Birth Weight (grams)",
+     main = "Maternal Age (20-30) vs. Infant Birth Weight",
+     pch = 19, col = "blue"
+)
+
+# Fit a linear regression model
+model <- lm(bwt ~ age, data = birthwt)
+
+# Add the regression line to the plot
+abline(model, col = "red")
+
+
+
+```
+Significance
+
+The p-value for the coefficient of age is 0.216. This indicates the significance of the relationship between maternal age and infant birth weight.
+
+Since the p-value (0.216) is greater than the conventional significance level of 0.05, we would not consider the relationship between maternal age and infant birth weight to be statistically significant in this our dataset.
+
+```{r}
+# Fit a linear regression model
+model <- lm(bwt ~ age, data = birthwt)
+
+# Print the summary of the regression model
+summary(model)
+
+```
+
+## Conclusion
+
+According to this data, the age of mothers between 20 and 30 has no significant influence on the weight of infants. Hence, we can be less stressed about giving birth.  
+
